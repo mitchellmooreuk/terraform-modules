@@ -19,6 +19,7 @@ resource "proxmox_virtual_environment_vm" "this" {
     content {
       datastore_id = "local-lvm" # Or whichever storage handles your EFI vars
       file_format  = "raw"
+      type         = efi_disk.value.type
     }
   }
 
@@ -29,6 +30,7 @@ resource "proxmox_virtual_environment_vm" "this" {
       datastore_id = disk.value.datastore_id
       size         = disk.value.size_gb
       interface    = disk.value.interface
+
     }
   }
 
