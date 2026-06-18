@@ -1,7 +1,7 @@
 /* Global Variables */
 variable "tags" {
-  type = map(string)
-  description = "(Optional) A map of tags to add to the resource."
+  type = list(string)
+  description = "(Optional) A list of tags to add to the resource."
 }
 
 /* Module Specific Variables */
