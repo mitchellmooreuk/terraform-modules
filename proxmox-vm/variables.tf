@@ -2,6 +2,7 @@
 variable "tags" {
   type        = list(string)
   description = "(Optional) A list of tags to add to the resource."
+  default     = []
 }
 
 /* Module Specific Variables */
