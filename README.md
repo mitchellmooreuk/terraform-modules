@@ -1,6 +1,8 @@
 # Terraform Modules
 
-AI was used to genereate this file! This repository houses a collection of reusable, version-controlled Terraform modules designed to provision and manage infrastructure across my personal projects and homelab ecosystem.
+Disclaimer: AI was used to generate this file.
+
+This repository houses a collection of reusable, version-controlled Terraform modules designed to provision and manage infrastructure across my personal projects and homelab ecosystem.
 
 ## Purpose
 
