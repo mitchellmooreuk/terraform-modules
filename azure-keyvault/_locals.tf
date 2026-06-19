@@ -1,6 +1,6 @@
 locals {
   module_tag = {
-    "module" = basename(abspath(path.module))
+    "module" = "azure-keyvault"
   }
   tags = merge(local.module_tag, var.tags)
 }
