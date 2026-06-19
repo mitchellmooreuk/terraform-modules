@@ -6,8 +6,13 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   node_name = var.node_name
 
+  scsi_hardware = var.scsi_type
+
+  bios = var.bios
+
   cpu {
     cores = var.cpu_cores
+    type  = var.cpu_type
   }
 
   memory {
@@ -15,11 +20,13 @@ resource "proxmox_virtual_environment_vm" "this" {
   }
 
   dynamic "efi_disk" {
-    for_each = var.bios == "ovmf" ? [1] : []
+    for_each = { for disk in var.disks : disk.datastore_id => disk if var.bios == "ovmf" }
+
     content {
-      datastore_id = "local-lvm" # Or whichever storage handles your EFI vars
-      file_format  = "raw"
-      type         = "2m"
+      datastore_id      = efi_disk.key
+      file_format       = efi_disk.value.file_format
+      type              = efi_disk.value.type
+      pre_enrolled_keys = efi_disk.value.pre_enrolled_keys
     }
   }
 
@@ -30,7 +37,7 @@ resource "proxmox_virtual_environment_vm" "this" {
       datastore_id = disk.value.datastore_id
       size         = disk.value.size_gb
       interface    = disk.value.interface
-
+      iothread     = disk.value.io_thread
     }
   }
 
@@ -42,5 +49,11 @@ resource "proxmox_virtual_environment_vm" "this" {
       vlan_id     = network_device.value.vlan_id
       mac_address = network_device.value.mac_address
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      operating_system
+    ]
   }
 }
