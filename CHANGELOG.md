@@ -9,6 +9,14 @@ AI was used to generate this file! This uses a simplified version of the standar
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ---
+## [1.6.0] - 19.06.2026
+### Added
+- Locked down firewall rules of the key vault in the azure-keyvault module
+### Changed 
+- 
+### Removed
+- 
+---
 ## [1.5.0] - 19.06.2026
 ### Added
 - cd_roms to proxmox-vm module

@@ -17,6 +17,17 @@ resource "azurerm_key_vault" "this" {
   sku_name                   = var.sku_name
   soft_delete_retention_days = 7
   rbac_authorization_enabled = true
-  
+
+  network_acls {
+    default_action = "Deny"
+    bypass         = "None"
+  }
+
   tags = local.tags
+  
+  lifecycle {
+    ignore_changes = [
+      network_acls[0].ip_rules
+    ]
+  }
 }
