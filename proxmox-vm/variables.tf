@@ -26,6 +26,15 @@ variable "disks" {
   default     = []
 }
 
+variable "cd_roms" {
+  type = list(object({
+    file_name = string
+    interface = string
+  }))
+  description = "(Optional) A list of CD-ROMs to create for the VM. Each CD-ROM must specify a file_id and interface."
+  default     = []
+}
+
 variable "cpu_cores" {
   type        = number
   description = "(Optional) The number of CPU cores (defaults to 1)."
