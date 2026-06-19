@@ -24,4 +24,10 @@ resource "azurerm_key_vault" "this" {
   }
 
   tags = local.tags
+  
+  lifecycle {
+    ignore_changes = [
+      network_acls[0].ip_rules
+    ]
+  }
 }
