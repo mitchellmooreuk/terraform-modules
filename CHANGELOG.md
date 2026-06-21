@@ -9,6 +9,14 @@ AI was used to generate this file! This uses a simplified version of the standar
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ---
+## [1.7.0] - 21.06.2026
+### Added
+- Adds ability to create template VMs
+### Changed 
+- 
+### Removed
+- 
+---
 ## [1.6.1] - 19.06.2026
 ### Added
 - Hardcodes module tag
