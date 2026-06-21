@@ -5,6 +5,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   tags        = var.tags
 
   node_name = var.node_name
+  template  = var.is_template
 
   scsi_hardware = var.scsi_type
 
@@ -12,7 +13,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   cpu {
     cores = var.cpu_cores
-    type  = var.cpu_type
+    type  = var.is_template != true ? var.cpu_type : "host"
   }
 
   memory {
@@ -20,7 +21,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   }
 
   dynamic "efi_disk" {
-    for_each = { for disk in var.disks : disk.datastore_id => disk if var.bios == "ovmf" }
+    for_each = var.disks != null ? { for disk in var.disks : disk.datastore_id => disk if var.bios == "ovmf" } : {}
 
     content {
       datastore_id      = efi_disk.key
@@ -30,21 +31,37 @@ resource "proxmox_virtual_environment_vm" "this" {
     }
   }
 
-  # Dynamic disk layout loop
   dynamic "disk" {
-    for_each = { for key, value in var.disks : key => value }
+    for_each = var.disks != null ? { for key, value in var.disks : key => value } : {}
     content {
       datastore_id = disk.value.datastore_id
-      size         = disk.value.size_gb
       interface    = disk.value.interface
+      size         = disk.value.size_gb
       iothread     = disk.value.io_thread
+      file_id      = disk.value.file_id
+      file_format  = disk.value.file_format
+    }
+  }
+
+  dynamic "initialization" {
+    for_each = var.disks != null ? { for key, value in var.disks : key => value } : {}
+    content {
+      datastore_id = initialization.value.datastore_id
+      interface    = "ide0"
+    }
+  }
+
+  dynamic "clone" {
+    for_each = var.clone_vm_id != null ? [1] : []
+    content {
+      vm_id = var.clone_vm_id
     }
   }
 
   dynamic "cdrom" {
     for_each = { for key, value in var.cd_roms : key => value }
     content {
-      file_id = cdrom.value.file_name
+      file_id   = cdrom.value.file_name
       interface = cdrom.value.interface
     }
   }
@@ -61,7 +78,16 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   lifecycle {
     ignore_changes = [
-      operating_system
+      operating_system,
+      disk,
+      initialization,
+      ipv4_addresses,
+      ipv6_addresses,
+      network_interface_names
     ]
   }
+}
+
+resource "time_sleep" "wait_for_vm" {
+  create_duration = "5s"
 }

@@ -12,11 +12,18 @@ variable "bios" {
   description = "(Required) The BIOS type (seabios or ovmf). When set to OVMF, an EFI disk will be also be created."
 }
 
+variable "is_template" {
+  type        = bool
+  description = "(Optional) Decides whether the VM should be a template or not."
+  default     = false
+}
+
 variable "disks" {
   type = list(object({
     datastore_id      = string
     size_gb           = number
-    interface         = string
+    interface         = optional(string)
+    file_id           = optional(string)
     io_thread         = optional(bool)
     file_format       = optional(string)
     type              = optional(string)
@@ -88,4 +95,10 @@ variable "vm_name" {
 variable "vm_description" {
   type        = string
   description = "(Optional) The description."
+}
+
+variable "clone_vm_id" {
+  type        = number
+  description = "(Optional) The ID of the template VM to clone."
+  default     = null
 }
