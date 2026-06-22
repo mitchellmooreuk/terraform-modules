@@ -56,7 +56,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   }
 
   dynamic "cdrom" {
-    for_each = { for key, value in var.cd_roms : key => value }
+    for_each = var.cd_roms != null ? { for key, value in var.cd_roms : key => value } : {}
     content {
       file_id   = cdrom.value.file_name
       interface = cdrom.value.interface
