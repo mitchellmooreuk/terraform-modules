@@ -5,7 +5,6 @@ resource "proxmox_virtual_environment_vm" "this" {
   tags        = var.tags
 
   node_name = var.node_name
-  template  = var.is_template
 
   scsi_hardware = var.scsi_type
 
@@ -13,7 +12,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   cpu {
     cores = var.cpu_cores
-    type  = var.is_template != true ? var.cpu_type : "host"
+    type  = var.cpu_type
   }
 
   memory {
@@ -43,18 +42,16 @@ resource "proxmox_virtual_environment_vm" "this" {
     }
   }
 
-  dynamic "initialization" {
-    for_each = var.disks != null ? { for key, value in var.disks : key => value } : {}
-    content {
-      datastore_id = initialization.value.datastore_id
-      interface    = "ide0"
+  initialization {
+    ip_config {
+      ipv4 {
+        address = var.ipv4_address
+        gateway = var.gateway
+      }
     }
-  }
-
-  dynamic "clone" {
-    for_each = var.clone_vm_id != null ? [1] : []
-    content {
-      vm_id = var.clone_vm_id
+    user_account {
+      username = "ubuntu"
+      keys     = [file("~/.ssh/id_rsa_terraform.pub")]
     }
   }
 
@@ -79,15 +76,6 @@ resource "proxmox_virtual_environment_vm" "this" {
   lifecycle {
     ignore_changes = [
       operating_system,
-      disk,
-      initialization,
-      ipv4_addresses,
-      ipv6_addresses,
-      network_interface_names
     ]
   }
-}
-
-resource "time_sleep" "wait_for_vm" {
-  create_duration = "5s"
 }
