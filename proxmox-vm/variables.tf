@@ -12,12 +12,6 @@ variable "bios" {
   description = "(Required) The BIOS type (seabios or ovmf). When set to OVMF, an EFI disk will be also be created."
 }
 
-variable "is_template" {
-  type        = bool
-  description = "(Optional) Decides whether the VM should be a template or not."
-  default     = false
-}
-
 variable "disks" {
   type = list(object({
     datastore_id      = string
@@ -97,8 +91,12 @@ variable "vm_description" {
   description = "(Optional) The description."
 }
 
-variable "clone_vm_id" {
-  type        = number
-  description = "(Optional) The ID of the template VM to clone."
-  default     = null
+variable "ipv4_address" {
+  type        = string
+  description = "(Optional) The IP address to assign the machine. Should be expressed as ip_address/cidr e.g. 10.25.25.5/24"
+}
+
+variable "gateway" {
+  type        = string
+  description = "(Optional) The default gateway for the machine. Should be expressed as ip_address e.g. 10.25.25.1"
 }
