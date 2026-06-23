@@ -18,6 +18,7 @@ variable "disks" {
     size_gb           = number
     interface         = optional(string)
     file_id           = optional(string)
+    import_from       = optional(string)
     io_thread         = optional(bool)
     file_format       = optional(string)
     type              = optional(string)
@@ -70,6 +71,17 @@ variable "network_devices" {
   default     = []
 }
 
+variable "cloud_init" {
+  type = object({
+    datastore_id = string
+    interface    = string
+    ipv4_address = optional(string)
+    gateway      = optional(string)
+  })
+  description = "(Optional) Cloud initialization options for the VM."
+  default     = null
+}
+
 variable "scsi_type" {
   type        = string
   description = "(Optional) The SCSI controller type (defaults to virtio-scsi-pci)."
@@ -89,14 +101,4 @@ variable "vm_name" {
 variable "vm_description" {
   type        = string
   description = "(Optional) The description."
-}
-
-variable "ipv4_address" {
-  type        = string
-  description = "(Optional) The IP address to assign the machine. Should be expressed as ip_address/cidr e.g. 10.25.25.5/24"
-}
-
-variable "gateway" {
-  type        = string
-  description = "(Optional) The default gateway for the machine. Should be expressed as ip_address e.g. 10.25.25.1"
 }

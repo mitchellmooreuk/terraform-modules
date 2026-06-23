@@ -39,19 +39,24 @@ resource "proxmox_virtual_environment_vm" "this" {
       iothread     = disk.value.io_thread
       file_id      = disk.value.file_id
       file_format  = disk.value.file_format
+      import_from  = disk.value.import_from
     }
   }
 
-  initialization {
-    ip_config {
-      ipv4 {
-        address = var.ipv4_address
-        gateway = var.gateway
+  dynamic "initialization" {
+    for_each = var.cloud_init != null ? [var.cloud_init] : []
+    content {
+      interface = initialization.value.interface
+      ip_config {
+        ipv4 {
+          address = initialization.value.ipv4_address
+          gateway = initialization.value.gateway
+        }
       }
-    }
-    user_account {
-      username = "ubuntu"
-      keys     = [file("~/.ssh/id_rsa_terraform.pub")]
+      user_account {
+        username = "ubuntu"
+        keys     = [file("~/.ssh/id_rsa_terraform.pub")]
+      }
     }
   }
 
@@ -76,7 +81,7 @@ resource "proxmox_virtual_environment_vm" "this" {
   lifecycle {
     ignore_changes = [
       operating_system,
-      initialization
+      initialization[0].user_account[0].keys
     ]
   }
 }
