@@ -9,6 +9,15 @@ AI was used to generate this file! This uses a simplified version of the standar
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ---
+## [1.9.0] - 23.06.2026
+### Added
+- New module: proxmox-download-image
+- Support for importing images to VM's
+### Changed 
+- 
+### Removed
+- 
+---
 ## [1.8.1] - 23.06.2026
 ### Added
 - Initialization block to the ignore lifecycle, as we do not want it to change after the machine has been provisioned.
