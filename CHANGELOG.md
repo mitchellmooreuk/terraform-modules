@@ -9,7 +9,15 @@ AI was used to generate this file! This uses a simplified version of the standar
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ---
-## [1.8.0] - 22.06/2026
+## [1.8.1] - 23.06.2026
+### Added
+- Initialization block to the ignore lifecycle, as we do not want it to change after the machine has been provisioned.
+### Changed 
+- 
+### Removed
+- 
+---
+## [1.8.0] - 22.06.2026
 ### Added
 - Support for specifying an ipv4_address that the machine should initialize with
 - Support for specifying a gateway that the machine should initialize with
