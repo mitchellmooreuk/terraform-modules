@@ -6,4 +6,5 @@ resource "proxmox_download_file" "this" {
   file_name    = var.file_name
 
   decompression_algorithm = var.decompression_algorithm
+  overwrite               = var.overwrite
 }

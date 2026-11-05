@@ -29,3 +29,9 @@ variable "decompression_algorithm" {
   description = "(Optional) The algorithm used to decompress the downloaded file. Must be one of gz, lzo, zst or bz2."
   default     = null
 }
+
+variable "overwrite" {
+  type        = bool
+  description = "(Optional) Whether to replace the file when its size differs from the URL (defaults to true). Set to false for files using decompression_algorithm, as their size always differs."
+  default     = true
+}
