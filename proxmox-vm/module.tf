@@ -6,6 +6,9 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   node_name = var.node_name
 
+  on_boot = var.on_boot
+  started = var.started
+
   scsi_hardware = var.scsi_type
 
   bios = var.bios
@@ -71,10 +74,11 @@ resource "proxmox_virtual_environment_vm" "this" {
   dynamic "network_device" {
     for_each = { for key, value in var.network_devices : key => value }
     content {
-      bridge      = network_device.value.bridge
-      model       = network_device.value.model
-      vlan_id     = network_device.value.vlan_id
-      mac_address = network_device.value.mac_address
+      bridge       = network_device.value.bridge
+      model        = network_device.value.model
+      vlan_id      = network_device.value.vlan_id
+      mac_address  = network_device.value.mac_address
+      disconnected = network_device.value.disconnected
     }
   }
 

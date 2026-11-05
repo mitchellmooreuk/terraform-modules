@@ -4,4 +4,6 @@ resource "proxmox_download_file" "this" {
   node_name    = var.node_name
   url          = var.url
   file_name    = var.file_name
+
+  decompression_algorithm = var.decompression_algorithm
 }
