@@ -23,3 +23,9 @@ variable "file_name" {
   description = "(Optional) The file name. If not provided, it is calculated using url. PVE will raise 'wrong file extension' error for some popular extensions file .raw or .qcow2 on PVE versions prior to 8.4. Workaround is to use e.g. .img instead."
   default     = null
 }
+
+variable "decompression_algorithm" {
+  type        = string
+  description = "(Optional) The algorithm used to decompress the downloaded file. Must be one of gz, lzo, zst or bz2."
+  default     = null
+}

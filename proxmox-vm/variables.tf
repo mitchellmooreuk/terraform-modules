@@ -62,13 +62,26 @@ variable "node_name" {
 
 variable "network_devices" {
   type = list(object({
-    bridge      = string
-    model       = string
-    vlan_id     = optional(number)
-    mac_address = optional(string)
+    bridge       = string
+    model        = string
+    vlan_id      = optional(number)
+    mac_address  = optional(string)
+    disconnected = optional(bool, false)
   }))
   description = "(Optional) A list of network devices to create for the VM."
   default     = []
+}
+
+variable "on_boot" {
+  type        = bool
+  description = "(Optional) Whether the VM starts when the host boots (defaults to true)."
+  default     = true
+}
+
+variable "started" {
+  type        = bool
+  description = "(Optional) Whether Terraform keeps the VM started (defaults to true)."
+  default     = true
 }
 
 variable "cloud_init" {

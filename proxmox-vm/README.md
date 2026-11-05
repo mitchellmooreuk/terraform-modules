@@ -74,6 +74,13 @@ module "proxmox_vm" {
     - `model` (string)
     - `vlan_id` (number, optional)
     - `mac_address` (string, optional)
+    - `disconnected` (bool, optional, default: `false`)
+
+- `on_boot` (bool, default: `true`)
+  - Whether the VM starts when the host boots.
+
+- `started` (bool, default: `true`)
+  - Whether Terraform keeps the VM started.
 
 - `vm_id` (string)
   - The identifier for the VM.
