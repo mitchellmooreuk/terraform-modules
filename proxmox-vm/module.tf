@@ -56,9 +56,15 @@ resource "proxmox_virtual_environment_vm" "this" {
           gateway = initialization.value.gateway
         }
       }
+      dynamic "dns" {
+        for_each = initialization.value.dns_servers != null ? [initialization.value.dns_servers] : []
+        content {
+          servers = dns.value
+        }
+      }
       user_account {
         username = "ubuntu"
-        keys     = [file("~/.ssh/id_rsa_terraform.pub")]
+        keys     = var.ssh_public_keys != null ? var.ssh_public_keys : [trimspace(file(pathexpand("~/.ssh/id_rsa_terraform.pub")))]
       }
     }
   }
@@ -79,6 +85,7 @@ resource "proxmox_virtual_environment_vm" "this" {
       vlan_id      = network_device.value.vlan_id
       mac_address  = network_device.value.mac_address
       disconnected = network_device.value.disconnected
+      firewall     = network_device.value.firewall
     }
   }
 
@@ -88,4 +95,14 @@ resource "proxmox_virtual_environment_vm" "this" {
       initialization
     ]
   }
+}
+
+module "firewall" {
+  count = anytrue([for device in var.network_devices : device.firewall]) ? 1 : 0
+
+  source = "../proxmox-vm-firewall"
+
+  node_name = var.node_name
+  vm_id     = proxmox_virtual_environment_vm.this.vm_id
+  rules     = var.firewall_rules
 }

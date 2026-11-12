@@ -67,6 +67,7 @@ variable "network_devices" {
     vlan_id      = optional(number)
     mac_address  = optional(string)
     disconnected = optional(bool, false)
+    firewall     = optional(bool, false)
   }))
   description = "(Optional) A list of network devices to create for the VM."
   default     = []
@@ -90,9 +91,27 @@ variable "cloud_init" {
     interface    = string
     ipv4_address = optional(string)
     gateway      = optional(string)
+    dns_servers  = optional(list(string))
   })
   description = "(Optional) Cloud initialization options for the VM."
   default     = null
+}
+
+variable "ssh_public_keys" {
+  type        = list(string)
+  description = "(Optional) The SSH public keys added by cloud-init (defaults to ~/.ssh/id_rsa_terraform.pub)."
+  default     = null
+}
+
+variable "firewall_rules" {
+  type = list(object({
+    comment = string
+    source  = string
+    proto   = string
+    dport   = string
+  }))
+  description = "(Optional) A list of inbound traffic to accept when a network device has firewall set."
+  default     = []
 }
 
 variable "scsi_type" {

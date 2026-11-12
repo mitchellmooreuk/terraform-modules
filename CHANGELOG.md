@@ -9,6 +9,18 @@ AI was used to generate this file! This uses a simplified version of the standar
 
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ---
+## [1.11.0] - 12.11.2026
+### Added
+- firewall option to network_devices in the proxmox-vm module.
+- dns_servers option to cloud_init in the proxmox-vm module.
+- ssh_public_keys variable to the proxmox-vm module.
+- proxmox-vm-firewall module, called by the proxmox-vm module.
+- firewall_rules variable to the proxmox-vm module.
+### Changed 
+- 
+### Removed
+- 
+---
 ## [1.10.1] - 05.11.2026
 ### Added
 - overwrite variable to the proxmox-download-image module.

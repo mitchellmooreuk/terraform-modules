@@ -75,6 +75,21 @@ module "proxmox_vm" {
     - `vlan_id` (number, optional)
     - `mac_address` (string, optional)
     - `disconnected` (bool, optional, default: `false`)
+    - `firewall` (bool, optional, default: `false`)
+
+- `cloud_init` (object, default: `null`)
+  - Cloud-init options for the VM.
+  - Must include `datastore_id` (string) and `interface` (string), and can include:
+    - `ipv4_address` (string, optional)
+    - `gateway` (string, optional)
+    - `dns_servers` (list(string), optional). When unset, Proxmox passes on the host's DNS.
+
+- `ssh_public_keys` (list(string), default: `null`)
+  - The SSH public keys added by cloud-init. When unset, `~/.ssh/id_rsa_terraform.pub` is used.
+
+- `firewall_rules` (list(object), default: `[]`)
+  - A list of inbound traffic to accept, passed to `proxmox-vm-firewall` when a network device has `firewall` set.
+  - Each rule must include `comment`, `source`, `proto` and `dport` (all strings).
 
 - `on_boot` (bool, default: `true`)
   - Whether the VM starts when the host boots.
